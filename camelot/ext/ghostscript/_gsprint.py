@@ -24,6 +24,7 @@ ghostscript._gsprint - A low-level interface to the Ghostscript C-API using ctyp
 #
 
 import sys
+import distutils.spawn
 from ctypes import *
 
 
@@ -83,9 +84,11 @@ def delete_instance(instance):
 
 
 if sys.platform == "win32":
-    c_stdstream_call_t = WINFUNCTYPE(c_int, gs_main_instance, POINTER(c_char), c_int)
+    c_stdstream_call_t = WINFUNCTYPE(
+        c_int, gs_main_instance, POINTER(c_char), c_int)
 else:
-    c_stdstream_call_t = CFUNCTYPE(c_int, gs_main_instance, POINTER(c_char), c_int)
+    c_stdstream_call_t = CFUNCTYPE(
+        c_int, gs_main_instance, POINTER(c_char), c_int)
 
 
 def _wrap_stdin(infp):
@@ -262,9 +265,10 @@ else:
         # shared object file not found
         import ctypes.util
 
-        libgs = ctypes.util.find_library("gs")
+        libgs = distutils.spawn.find_executable("gs")
         if not libgs:
-            raise RuntimeError("Please make sure that Ghostscript is installed")
+            raise RuntimeError(
+                "Please make sure that Ghostscript is installed")
         libgs = cdll.LoadLibrary(libgs)
 
 del __win32_finddll
