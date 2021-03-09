@@ -269,6 +269,6 @@ else:
         if not libgs:
             raise RuntimeError(
                 "Please make sure that Ghostscript is installed")
-        libgs = cdll.LoadLibrary("{path}.so.9".format(path=libgs))
+        libgs = cdll.LoadLibrary(libgs)
 
 del __win32_finddll
